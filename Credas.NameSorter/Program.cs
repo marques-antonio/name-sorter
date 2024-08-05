@@ -6,12 +6,6 @@ namespace Credas.NameSorter
     {
         static void Main(string[] args)
         {
-            //TODO: Temporary code for development testing.
-            /*
-            Array.Resize(ref args, args.Length + 1);
-            args[args.Length - 1] = "C:\\Projects\\Processes\\Credas\\name-sorter\\Credas.NameSorter\\unsorted-names-list.txt";           
-            */
-
             if (args.Length < 1)
             {
                 Console.WriteLine("Usage: name-sorter <path-to-unsorted-names-file>");
