@@ -1,0 +1,10 @@
+language: csharp
+solution: Credas.NameSorter.sln
+
+install:
+  - nuget restore Credas.NameSorter.sln
+  - nuget install NUnit.Runners -Version 3.10.0 -OutputDirectory testrunner
+
+script:
+  - msbuild /p:Configuration=Release Credas.NameSorter.sln
+  - mono ./testrunner/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe ./Credas.NameSorter.Tests/bin/Release/Credas.NameSorter.Tests.dll
