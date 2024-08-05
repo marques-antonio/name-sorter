@@ -5,3 +5,5 @@
 /Credas.NameSorter/obj
 /.vs/Credas.NameSorter
 /Credas.NameSorter/bin/Debug/net8.0
+/Credas.NameSorter.Tests/bin/Debug/net8.0
+/Credas.NameSorter.Tests/obj

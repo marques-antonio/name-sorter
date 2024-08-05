@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Credas.NameSorter", "Credas.NameSorter\Credas.NameSorter.csproj", "{EB073230-721E-496E-9395-BD5B39AAF022}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Credas.NameSorter", "Credas.NameSorter\Credas.NameSorter.csproj", "{EB073230-721E-496E-9395-BD5B39AAF022}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Credas.NameSorter.Tests", "Credas.NameSorter.Tests\Credas.NameSorter.Tests.csproj", "{EE84C686-A068-4B77-A83F-02184C9CE272}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EB073230-721E-496E-9395-BD5B39AAF022}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB073230-721E-496E-9395-BD5B39AAF022}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB073230-721E-496E-9395-BD5B39AAF022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE84C686-A068-4B77-A83F-02184C9CE272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE84C686-A068-4B77-A83F-02184C9CE272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE84C686-A068-4B77-A83F-02184C9CE272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE84C686-A068-4B77-A83F-02184C9CE272}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

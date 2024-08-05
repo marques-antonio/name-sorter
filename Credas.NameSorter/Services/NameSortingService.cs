@@ -6,34 +6,26 @@ namespace Credas.NameSorter.Services
     {
         public List<Person> ReadNamesFromFile(string filePath)
         {
-            var lines = File.ReadAllLines(filePath);
-            var people = new List<Person>();
-
-            foreach (var line in lines)
-            {
-                var names = line.Split(' ');
-                var firstName = names[0];
-                var lastName = names[^1];
-                var middleName = names.Length > 2 ? string.Join(' ', names.Skip(1).Take(names.Length - 2)) : string.Empty;
-
-                people.Add(new Person(firstName, middleName, lastName));
-            }
-
-            return people;
+            var names = File.ReadAllLines(filePath);
+            return names
+               .Where(name => !string.IsNullOrWhiteSpace(name)) // Filters out empty and whitespace-only lines
+               .Select(name => new Person(name))
+               .ToList();
         }
 
-        public List<Person> SortNames(List<Person> people)
+        public List<Person> SortNames(List<Person> unsortedNames)
         {
-            return people.OrderBy(p => p.LastName)
-                         .ThenBy(p => p.FirstName)
-                         .ThenBy(p => p.MiddleName)
-                         .ToList();
+            return unsortedNames
+                .OrderBy(p => p.LastName)
+                .ThenBy(p => p.FirstName)
+                .ThenBy(p => p.MiddleNames)
+                .ToList();
         }
 
-        public void WriteNamesToFile(List<Person> people, string filePath)
+        public void WriteNamesToFile(string filePath, List<Person> sortedNames)
         {
-            var lines = people.Select(p => p.ToString()).ToList();
-            File.WriteAllLines(filePath, lines);
+            var sortedNamesStrings = sortedNames.Select(person => person.ToString()).ToArray();
+            File.WriteAllLines(filePath, sortedNamesStrings);
         }
     }
 }
