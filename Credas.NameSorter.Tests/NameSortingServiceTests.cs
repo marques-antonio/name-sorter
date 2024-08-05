@@ -30,7 +30,7 @@ namespace NameSorter.Tests.Services
 
         #region SortNames
         [Fact]
-        public void SortNames_ShouldSortByLastNameThenGivenNames()
+        public void SortNames_ShouldSortByLastNameThenByGivenNames()
         {
             // Arrange
             var unsortedNames = new List<Person>
@@ -69,11 +69,64 @@ namespace NameSorter.Tests.Services
             // Assert
             Assert.Equal(expectedSortedNames, sortedNames, new PersonComparer());
         }
+
+        [Fact]
+        public void SortNames_ShouldHandleEmptyList()
+        {
+            // Arrange
+            var unsortedNames = new List<Person>();
+            var expectedSortedNames = new List<Person>();
+
+            // Act
+            var sortedNames = _service.SortNames(unsortedNames);
+
+            // Assert
+            Assert.Equal(expectedSortedNames, sortedNames, new PersonComparer());
+        }
+
+        [Fact]
+        public void SortNames_ShouldHandleSingleName()
+        {
+            // Arrange
+            var unsortedNames = new List<Person> { new Person("Janet Parsons") };
+            var expectedSortedNames = new List<Person> { new Person("Janet Parsons") };
+
+            // Act
+            var sortedNames = _service.SortNames(unsortedNames);
+
+            // Assert
+            Assert.Equal(expectedSortedNames, sortedNames, new PersonComparer());
+        }
+
+        [Fact]
+        public void SortNames_ShouldSortNamesWithSameLastNameByGivenNames()
+        {
+            // Arrange
+            var unsortedNames = new List<Person>
+            {
+                new Person("Janet Parsons"),
+                new Person("John Parsons"),
+                new Person("Alice Parsons")
+            };
+
+            var expectedSortedNames = new List<Person>
+            {
+                new Person("Alice Parsons"),
+                new Person("Janet Parsons"),
+                new Person("John Parsons")
+            };
+
+            // Act
+            var sortedNames = _service.SortNames(unsortedNames);
+
+            // Assert
+            Assert.Equal(expectedSortedNames, sortedNames, new PersonComparer());
+        }
         #endregion
 
         #region ReadNamesFromFile
         [Fact]
-        public void ReadNamesFromFile_ShouldReadNamesFromFile()
+        public void ReadNamesFromFile_ShouldReadNamesCorrectly()
         {
             // Arrange
             var filePath = Path.GetTempFileName();
@@ -103,7 +156,7 @@ namespace NameSorter.Tests.Services
         }
 
         [Fact]
-        public void ReadNamesFromFile_ShouldHandleUnexpectedData()
+        public void ReadNamesFromFile_ShouldHandleEmptyLinesAndSpaces()
         {
             // Arrange
             var filePath = Path.GetTempFileName();
@@ -135,7 +188,7 @@ namespace NameSorter.Tests.Services
         }
 
         [Fact]
-        public void ReadNamesFromFile_ShouldThrowException_WhenFileDoesNotExist()
+        public void ReadNamesFromFile_ShouldThrowFileNotFoundException_WhenFileDoesNotExist()
         {
             // Arrange
             var filePath = "nonexistentfile.txt";
@@ -143,11 +196,39 @@ namespace NameSorter.Tests.Services
             // Act & Assert
             Assert.Throws<FileNotFoundException>(() => _service.ReadNamesFromFile(filePath));
         }
+
+        [Fact]
+        public void ReadNamesFromFile_ShouldReadLargeNumberOfNames()
+        {
+            // Arrange
+            var filePath = Path.GetTempFileName();
+            var fileContent = new string[1000];
+            for (int i = 0; i < 1000; i++)
+            {
+                fileContent[i] = $"First{i} Middle{i} Last{i}";
+            }
+            File.WriteAllLines(filePath, fileContent);
+
+            var expectedNames = new List<Person>();
+            for (int i = 0; i < 1000; i++)
+            {
+                expectedNames.Add(new Person($"First{i} Middle{i} Last{i}"));
+            }
+
+            // Act
+            var names = _service.ReadNamesFromFile(filePath);
+
+            // Assert
+            Assert.Equal(expectedNames, names, new PersonComparer());
+
+            // Cleanup
+            File.Delete(filePath);
+        }
         #endregion
 
         #region WriteNamesToFile
         [Fact]
-        public void WriteNamesToFile_ShouldWriteNamesToFile()
+        public void WriteNamesToFile_ShouldWriteNamesCorrectly()
         {
             // Arrange
             var filePath = Path.GetTempFileName();
@@ -170,6 +251,24 @@ namespace NameSorter.Tests.Services
                 "Adonis Julius Archer"
             };
             Assert.Equal(expectedContent, writtenContent);
+
+            // Cleanup
+            File.Delete(filePath);
+        }
+
+        [Fact]
+        public void WriteNamesToFile_ShouldHandleEmptyList()
+        {
+            // Arrange
+            var filePath = Path.GetTempFileName();
+            var namesToWrite = new List<Person>();
+
+            // Act
+            _service.WriteNamesToFile(filePath, namesToWrite);
+
+            // Assert
+            var writtenContent = File.ReadAllLines(filePath);
+            Assert.Empty(writtenContent);
 
             // Cleanup
             File.Delete(filePath);
